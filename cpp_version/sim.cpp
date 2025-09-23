@@ -38,7 +38,7 @@ vector<int> constructpath(int src, int dst, vector<int>& parent){
     int node = dst;
     vector<int> path = {dst};
     while(node != src){
-        if(parent[node] == -1) return {}; // unreachable
+        if(parent[node] == -1) return {}; 
         node = parent[node];
         path.push_back(node);
     }
@@ -69,7 +69,7 @@ void sim(int src, int dst, int v, vector<vector<vector<int>>>& edges, queue<pair
         }
 
         if(edge_cost == -1){
-            cout << "❌ No edge found from " << prev_node << " to " << curr_pos << endl;
+            cout << " No edge found from " << prev_node << " to " << curr_pos << endl;
             return;
         }
 
@@ -81,7 +81,7 @@ void sim(int src, int dst, int v, vector<vector<vector<int>>>& edges, queue<pair
              << " with a total cost of: " << total << endl;
 
         if(curr_pos == dst){
-            cout << "✅ Reached destination " << dst 
+            cout << " Reached destination " << dst 
                  << " at total cost " << total << endl;
             return;
         }
