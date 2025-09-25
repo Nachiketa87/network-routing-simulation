@@ -46,50 +46,44 @@ vector<int> constructpath(int src, int dst, vector<int>& parent){
     return path;
 }
 
-void sim(int src, int dst, int v, vector<vector<vector<int>>>& edges, queue<pair<int,int>>& que, int hops, int indx, int total){
+void sim(int src, int dst, int v, vector<vector<vector<int>>>& edges, queue<pair<int,int>>& que, int hops, int prev, int total){
     int table = que.front().first;
+    int trigger = que.front().second;
+
     vector<int> parent (v,-1);
     parent[src] = src;
-    vector<int> dist = dijkstra(src,v,edges[table],parent);    
+    vector<int> dist = dijkstra(src,v,edges[table],parent);
     vector<int> path = constructpath(src,dst,parent);
-    
-    int curr_pos = src, trigger = que.front().second, prev = 0;
-    
+
+    int curr_pos = src, prev_pos = prev, indx = 0;
     while(hops < trigger && indx < path.size()){
-        int prev_node = path[indx-1];
-        int curr_pos = path[indx];
-
-        int edge_cost = -1;
-        for(auto& e : edges[table]){
-            if((e[0] == prev_node && e[1] == curr_pos) || 
-               (e[0] == curr_pos && e[1] == prev_node)){
-                edge_cost = e[2];
-                break;
-            }
+        if(curr_pos == src){
+            indx++; hops++;
+            curr_pos = path[indx];
+            total += dist[curr_pos];
+            cout << "packet arrived at: " << curr_pos << " from: " << src << " with total cost of: " << total << endl;
+            continue;
         }
-
-        if(edge_cost == -1){
-            cout << " No edge found from " << prev_node << " to " << curr_pos << endl;
-            return;
-        }
-
-        total += edge_cost;
-        hops++; indx++;
-
-        cout << "current cost incurred: " << edge_cost << endl;
-        cout << "packet moved to: " << curr_pos 
-             << " with a total cost of: " << total << endl;
-
         if(curr_pos == dst){
-            cout << " Reached destination " << dst 
-                 << " at total cost " << total << endl;
+            cout << "reached destination: " << dst << " with total cost: " << total;
             return;
-        }
+        }          
+        indx++; hops++;
+        prev_pos = curr_pos;
+        curr_pos = path[indx];
+        total += dist[curr_pos] - dist[prev_pos];
+        cout << "packet arrived at: " << curr_pos << " from: " << prev_pos << " with total cost of: " << total << endl;
+    }
+    if(curr_pos == dst){
+        cout << "reached destination: " << dst << " at total cost: " << total;
+        return;
     }
     que.pop();
-    if(que.empty() || curr_pos == dst) return;
-    sim(curr_pos,dst,v,edges,que,hops,1,total);
-
+    if(que.empty()){
+        cout << "packet expired at: " << curr_pos;
+        return;
+    }
+    sim(curr_pos,dst,v,edges,que,hops,prev_pos,total);
 }
 
 int main(){
@@ -102,7 +96,7 @@ int main(){
     queue<pair<int,int>> que;
     que.push({0,2});
     que.push({1,3});
-    que.push({2,4});
+    que.push({2,7});
 
-    sim(src,dst,v,edges,que,0,1,0); 
+    sim(src,dst,v,edges,que,0,src,0); 
 }
