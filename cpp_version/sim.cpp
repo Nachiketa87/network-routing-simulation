@@ -54,6 +54,10 @@ void sim(int src, int dst, int v, vector<vector<vector<int>>>& edges, queue<pair
     parent[src] = src;
     vector<int> dist = dijkstra(src,v,edges[table],parent);
     vector<int> path = constructpath(src,dst,parent);
+    if(path.empty()){
+        cout << "No path exists between: " << src << " and " << dst << endl;
+        return;
+    }
 
     int curr_pos = src, prev_pos = prev, indx = 0;
     while(hops < trigger && indx < path.size()){
