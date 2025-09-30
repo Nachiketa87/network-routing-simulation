@@ -96,15 +96,21 @@ void sim(int src, int dst, int v, vector<vector<vector<int>>>& edges, queue<pair
         path = constructpath(src,dst,parent);
     }
     else{
-        dist = dijkstra(src,v,edges[prev_tab_ind],parent);
-        path = constructpath(src,dst,parent);
+        // dist = dijkstra(src,v,edges[prev_tab_ind],parent);
+        // path = constructpath(src,dst,parent);
+        path = rem;
     }
     cout << "prev_tab_ind value: " << prev_tab_ind << endl;
     if(path.empty()){
         cout << "No path exists between: " << src << " and " << dst << endl;
         return;
     }
-
+    cout << "decided path: ";
+    for(int pt: path) cout << pt << " ";
+    cout << endl;
+    cout << "all dist: ";
+    for(int d: dist) cout << d << " ";
+    cout << endl;
     int curr_pos = src, prev_pos = prev, indx = 0;
     while(hops < trigger && indx < path.size()){
         if(curr_pos == src){
@@ -152,7 +158,7 @@ int main(){
     vector<vector<vector<int>>> edges = {
         {{0,1,4},{0,2,8},{1,4,6},{2,3,2},{3,4,10},{1,2,1}},  
         {{0,1,4},{0,2,15},{1,4,6},{2,3,30},{3,4,10},{1,2,1}},
-        {{0,1,4},{0,2,15},{1,4,12},{2,3,30},{3,4,5},{1,2,1}} 
+        {{0,1,4},{0,2,15},{1,4,12},{2,3,30},{3,4,5},{1,2,1}}  
     };
     queue<pair<int,int>> que;
     que.push({0,2});
