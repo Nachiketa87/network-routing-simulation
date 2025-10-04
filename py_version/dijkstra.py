@@ -51,7 +51,7 @@ def sim(src,v,dst,edges,que,hops,prev,total,prev_len=1e7,prev_tab_ind=0,rem=[]):
     curr_path = []
     if prev_len != 1e7:
         curr_path.append(src)
-        events.append({"events":"Fluctuations detected, table updated", "table":table, "at_node":src})
+        events.append({"event":"Fluctuations detected, table updated", "table":table, "at_node":src})
 
     new_len = 0
     if(table > 0):
@@ -128,19 +128,20 @@ def sim(src,v,dst,edges,que,hops,prev,total,prev_len=1e7,prev_tab_ind=0,rem=[]):
     all_paths = curr_path[:-1] + res["path"]
     return {"path":all_paths, "cost":res["cost"], "events": all_events}
 
-if __name__ == "__main__":
-    
-    src,v,dst = 0,5,3
-    edges = [
-        [[0,1,4],[0,2,8],[1,4,6],[2,3,2],[3,4,10],[1,2,1]],
-        [[0,1,4],[0,2,15],[1,4,6],[2,3,30],[3,4,10],[1,2,1]],
-        [[0,1,4],[0,2,15],[1,4,12],[2,3,30],[3,4,5],[1,2,1]]
-    ] 
-    que = deque()
-    que.append((0,2))
-    que.append((1,3))
-    que.append((2,7))
 
+    
+src,v,dst = 0,5,3
+edges = [
+    [[0,1,4],[0,2,8],[1,4,6],[2,3,2],[3,4,10],[1,2,1]],
+    [[0,1,4],[0,2,15],[1,4,6],[2,3,30],[3,4,10],[1,2,1]],
+    [[0,1,4],[0,2,15],[1,4,12],[2,3,30],[3,4,5],[1,2,1]]
+] 
+que = deque()
+que.append((0,2))
+que.append((1,3))
+que.append((2,7))
+
+if __name__ == "__main__":
     sol = sim(src,v,dst,edges,que,0,src,0)
 
     sol["path"].insert(0,src)
