@@ -52,6 +52,8 @@ def sim(src,v,dst,edges,que,hops,prev,total,prev_len=1e7,prev_tab_ind=0,rem=[]):
     if prev_len != 1e7:
         curr_path.append(src)
         events.append({"event":"Fluctuations detected, table updated", "table":table, "at_node":src})
+    else:
+        events.append({"event":"Packet start from source", "node":src, "cost":0})
 
     new_len = 0
     if(table > 0):
@@ -76,6 +78,8 @@ def sim(src,v,dst,edges,que,hops,prev,total,prev_len=1e7,prev_tab_ind=0,rem=[]):
         cost = dist[dst]
         if prev_len != 1e7:
             events.append({"event":"Major fluctuations observed, new trajectory", "path":path})
+        else:
+            events.append({"event": f"Initial trajectory from source node {src}", "path":path})
     else:
         path = rem
         cost = new_len
